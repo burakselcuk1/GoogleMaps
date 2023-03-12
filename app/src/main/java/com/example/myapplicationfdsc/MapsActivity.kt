@@ -56,9 +56,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 // konum değişirse yapılacak işlemler
                // println(p0.latitude)
                // println(p0.longitude)
-
+                mMap.clear()
                 val guncelKonum = LatLng (p0.latitude, p0.longitude)
-                mMap.addMarker (MarkerOptions() .position (guncelKonum).title("Esenler"))
+                mMap.addMarker (MarkerOptions().position (guncelKonum).title("Esenler"))
                 mMap.moveCamera (CameraUpdateFactory.newLatLngZoom (guncelKonum, 15f) )
             }
 
@@ -71,6 +71,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }else{
             // izin verilmiş
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,1,1f, locationListener)
+            val sonBilinenKonum = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+            if (sonBilinenKonum != null){
+                val sonBilinenLatLng = LatLng(sonBilinenKonum.latitude,sonBilinenKonum.longitude)
+                mMap.addMarker (MarkerOptions().position (sonBilinenLatLng).title("son konum"))
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sonBilinenLatLng,15f))
+            }
         }
     }
 
